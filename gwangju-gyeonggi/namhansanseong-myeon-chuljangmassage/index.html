@@ -24,7 +24,8 @@
 <meta name="theme-color" content="#0a1120">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700;900&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700;900&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/style.css">
 <script type="application/ld+json">
 {
@@ -95,7 +96,10 @@
       </div>
     </div>
     <div class="hero-media">
-      <img src="/assets/hero.jpg" alt="남한산성면 출장마사지·홈타이 안내" width="1280" height="720" loading="eager" decoding="async">
+      <picture>
+        <source srcset="/assets/hero.webp" type="image/webp">
+        <img src="/assets/hero.jpg" alt="남한산성면 출장마사지·홈타이 안내" width="1200" height="675" fetchpriority="high" decoding="async">
+      </picture>
     </div>
   </div>
 </section>

@@ -96,7 +96,10 @@ _HERO = f"""<section class="hero">
       </ul>
     </div>
     <div class="hero-media">
-      <img src="/assets/hero.jpg" alt="경기 광주 출장마사지·광주시 홈타이 방문 관리 안내" width="1280" height="720" loading="eager" decoding="async">
+      <picture>
+        <source srcset="/assets/hero.webp" type="image/webp">
+        <img src="/assets/hero.jpg" alt="경기 광주 출장마사지·광주시 홈타이 방문 관리 안내" width="1200" height="675" fetchpriority="high" decoding="async">
+      </picture>
     </div>
   </div>
 </section>

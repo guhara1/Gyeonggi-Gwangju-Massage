@@ -152,6 +152,7 @@ def render_page_hero(page: dict) -> str:
     """메인을 제외한 모든 페이지에 적용되는 슬림 히어로(제목 + 16:9 이미지)."""
     crumb = render_breadcrumb(page.get("breadcrumb") or [])
     img = page.get("hero_image", "/assets/hero.jpg")
+    img_webp = page.get("hero_image_webp", re.sub(r"\.(jpg|jpeg|png)$", ".webp", img))
     alt = page.get("hero_alt", page["h1"])
     return f"""<section class="hero page-hero">
   <div class="hero-inner hero-grid">
@@ -165,7 +166,10 @@ def render_page_hero(page: dict) -> str:
       </div>
     </div>
     <div class="hero-media">
-      <img src="{img}" alt="{alt}" width="1280" height="720" loading="eager" decoding="async">
+      <picture>
+        <source srcset="{img_webp}" type="image/webp">
+        <img src="{img}" alt="{alt}" width="1200" height="675" fetchpriority="high" decoding="async">
+      </picture>
     </div>
   </div>
 </section>
@@ -226,7 +230,8 @@ def render_page(page: dict) -> str:
 <meta name="theme-color" content="#0a1120">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700;900&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700;900&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/style.css">
 {structured}{extra_head}</head>
 <body>
