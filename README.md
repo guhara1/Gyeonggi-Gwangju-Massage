@@ -51,10 +51,52 @@ python3 build.py
 
 - `content/site.py`의 `BASE_URL`을 실제 도메인으로 변경한 뒤 `python3 build.py` 재실행.
 
+## 색인(네이버·구글·빙) 가속
+
+`python3 build.py` 가 아래 파일을 자동 생성합니다.
+
+| 파일 | 용도 |
+|------|------|
+| `sitemap.xml` | 색인 페이지 목록(lastmod·priority 포함). 서치콘솔/서치어드바이저에 제출 |
+| `feed.xml` | RSS 2.0 피드맵(색인 보조), `<head>`에 자동 링크 |
+| `robots.txt` | 전체 허용 + 네이버(Yeti)·구글봇·빙봇 명시 + Sitemap |
+| `<INDEXNOW_KEY>.txt` | IndexNow 공개 키 파일(사이트 루트) |
+
+### 검색엔진 등록 (최초 1회)
+- **네이버 서치어드바이저**: 메인 head 의 `naver-site-verification` 으로 소유확인 → 사이트맵 `/sitemap.xml`, RSS `/feed.xml` 제출
+- **구글 서치콘솔**: 속성 등록 → `/sitemap.xml` 제출
+- **빙 웹마스터**: 사이트 추가 → `/sitemap.xml` 제출(또는 구글 서치콘솔에서 가져오기)
+
+### IndexNow — 빙·네이버·얀덱스 즉시 통보
+키 파일이 배포된 뒤 실행합니다. (구글은 IndexNow 미참여)
+```bash
+python3 scripts/indexnow.py                 # sitemap 전체 제출
+python3 scripts/indexnow.py <URL> [<URL>…]  # 글 1개 올릴 때 해당 URL만
+```
+
+### 구글 Indexing API — 즉시 색인 요청
+서비스 계정 키 준비 후 실행합니다(스크립트 상단 주석에 셋업 절차).
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS=/path/service-account.json
+pip install google-auth
+python3 scripts/google_indexing.py
+```
+
+### 자동화 (GitHub Actions)
+`.github/workflows/indexnow.yml`:
+- `content/**` 또는 `build.py` 를 **main 에 push** 하면 → 빌드 후 **IndexNow 자동 제출**(글 올릴 때마다 빙·네이버 즉시 통보)
+- 구글 Indexing API 는 수동 실행(workflow_dispatch) 시에만 동작하며, 레포 시크릿 `GCP_SA_KEY`(서비스 계정 JSON) 설정 필요
+> Cloudflare Pages 가 main 외 브랜치에서 배포 중이면 워크플로의 `branches` 를 실제 배포 브랜치로 맞추세요.
+
+> 참고: 구글·빙의 구식 `sitemap ping` 엔드포인트는 2023년 종료되었습니다.
+> 따라서 빙·네이버는 IndexNow, 구글은 Indexing API/서치콘솔로 대체합니다.
+
 ## 디렉터리
 
 ```
-build.py            빌드 스크립트
+build.py            빌드 스크립트 (sitemap·feed·robots·IndexNow 키 생성)
 content/            페이지 정의 (site, main, areas, stations, info, pricing)
-assets/             style.css, nav.js, 파비콘/OG 이미지
+assets/             style.css, nav.js, 파비콘/OG/히어로 이미지
+scripts/            indexnow.py, google_indexing.py (색인 제출)
+.github/workflows/  indexnow.yml (색인 자동 통보)
 ```

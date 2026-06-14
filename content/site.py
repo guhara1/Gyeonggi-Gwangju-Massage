@@ -7,6 +7,10 @@ BRAND_MARK = "GO"
 PHONE = "0508-202-4719"
 PHONE_DISPLAY = "0508-202-4719"
 
+# IndexNow(빙·네이버·얀덱스 즉시 색인 통보) 공개 키.
+# build.py 가 사이트 루트에 <KEY>.txt 파일을 생성한다.
+INDEXNOW_KEY = "55c87d700f1588b50371b0bab69baf1a"
+
 # 읍·면·대표 행정동 14곳 (slug, 한글명) — 내부링크·메뉴 공용
 AREAS = [
     ("chowol-eup-chuljangmassage", "초월읍"),

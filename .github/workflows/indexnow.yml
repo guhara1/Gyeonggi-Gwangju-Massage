@@ -1,0 +1,55 @@
+name: 색인 자동 통보 (IndexNow + Google)
+
+# content/ 또는 build.py 변경을 main 에 push 하면 IndexNow(빙·네이버)에 즉시 통보.
+# 구글 Indexing API 는 quota 보호를 위해 수동 실행(workflow_dispatch) 시에만 동작하며,
+# 레포 시크릿 GCP_SA_KEY(서비스 계정 JSON)가 설정된 경우에만 제출한다.
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'content/**'
+      - 'build.py'
+  workflow_dispatch:
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: 빌드
+        run: python3 build.py
+      - name: IndexNow 제출 (빙·네이버·얀덱스)
+        run: python3 scripts/indexnow.py
+
+  google-indexing:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: google-auth 설치
+        run: pip install --quiet google-auth
+      - name: 서비스 계정 키 준비
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          if [ -z "$GCP_SA_KEY" ]; then
+            echo "GCP_SA_KEY 시크릿이 없어 구글 색인 요청을 건너뜁니다."
+          else
+            printf '%s' "$GCP_SA_KEY" > "$RUNNER_TEMP/sa.json"
+            echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/sa.json" >> "$GITHUB_ENV"
+          fi
+      - name: 빌드
+        run: python3 build.py
+      - name: 구글 Indexing API 제출
+        run: |
+          if [ -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
+            echo "키가 없어 건너뜁니다."
+          else
+            python3 scripts/google_indexing.py
+          fi
