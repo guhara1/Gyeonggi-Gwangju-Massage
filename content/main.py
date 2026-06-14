@@ -79,20 +79,25 @@ _JSONLD = f"""<script type="application/ld+json">
 """
 
 _HERO = f"""<section class="hero">
-  <div class="hero-inner">
-    <p class="hero-badge">Premium Visiting Spa · 경기도 광주시 전지역</p>
-    <h1>경기 광주 출장마사지·광주시 홈타이<br>지역별 예약 안내</h1>
-    <p class="hero-lead">샵까지 갈 필요 없이, 계신 곳에서 받는 방문 관리.<br>경기도 광주시 읍·면·동 어디든 전화 한 통이면 예약이 끝납니다.</p>
-    <div class="hero-actions">
-      <a class="hero-btn primary" href="tel:{PHONE}">📞 {PHONE_DISPLAY}</a>
-      <a class="hero-btn" href="#areas">지역별 안내 보기</a>
+  <div class="hero-inner hero-grid">
+    <div class="hero-text">
+      <p class="hero-badge">Premium Visiting Spa · 경기도 광주시 전지역</p>
+      <h1>경기 광주 출장마사지·광주시 홈타이<br>지역별 예약 안내</h1>
+      <p class="hero-lead">샵까지 갈 필요 없이, 계신 곳에서 받는 방문 관리.<br>경기도 광주시 읍·면·동 어디든 전화 한 통이면 예약이 끝납니다.</p>
+      <div class="hero-actions">
+        <a class="hero-btn primary" href="tel:{PHONE}">📞 {PHONE_DISPLAY}</a>
+        <a class="hero-btn" href="#areas">지역별 안내 보기</a>
+      </div>
+      <ul class="hero-stats">
+        <li><strong>14곳</strong><span>읍·면·대표 동</span></li>
+        <li><strong>4개</strong><span>경강선 역세권</span></li>
+        <li><strong>전지역</strong><span>방문 가능</span></li>
+        <li><strong>24시간</strong><span>예약 상담</span></li>
+      </ul>
     </div>
-    <ul class="hero-stats">
-      <li><strong>14곳</strong><span>읍·면·대표 동</span></li>
-      <li><strong>4개</strong><span>경강선 역세권</span></li>
-      <li><strong>전지역</strong><span>방문 가능</span></li>
-      <li><strong>24시간</strong><span>예약 상담</span></li>
-    </ul>
+    <div class="hero-media">
+      <img src="/assets/hero.jpg" alt="경기 광주 출장마사지·광주시 홈타이 방문 관리 안내" width="1280" height="720" loading="eager" decoding="async">
+    </div>
   </div>
 </section>
 """

@@ -248,6 +248,33 @@ a:hover { color: var(--gold); }
 }
 .hero-stats span { color: var(--text-dim); font-size: 0.8rem; letter-spacing: 0.1em; }
 
+/* 2단 히어로 — 왼쪽 텍스트 + 오른쪽 16:9 이미지 */
+.hero-grid {
+  max-width: 1180px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+  gap: 52px;
+  align-items: center;
+  text-align: left;
+}
+.hero-text { min-width: 0; }
+.hero-grid .hero-badge { padding-bottom: 16px; }
+.hero-grid .hero-actions { justify-content: flex-start; margin-bottom: 0; }
+.hero-grid .hero-stats { justify-content: flex-start; margin-top: 30px; }
+.hero-grid .hero-stats li:first-child { padding-left: 0; }
+.hero-media { min-width: 0; }
+.hero-media img {
+  display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+  border-radius: 16px; border: 1px solid var(--line-gold);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.5);
+}
+/* 지역·안내 페이지용 슬림 히어로 */
+.page-hero { padding-top: 52px; padding-bottom: 50px; }
+.page-hero::after { display: none; }
+.page-hero h1 { font-size: 2.25rem; line-height: 1.36; margin-bottom: 14px; }
+.page-hero .breadcrumb { margin: 0 0 16px; }
+.page-hero .hero-lead { font-size: 1.02rem; line-height: 1.9; margin-bottom: 26px; }
+
 /* ── 본문 레이아웃 (좌측 고정 목차) ────── */
 .site-main { padding: 52px 0 80px; }
 .page-layout.has-toc {
@@ -658,6 +685,17 @@ th { background: var(--panel-2); color: var(--gold-soft); font-family: var(--ser
   .hero-stats { flex-wrap: wrap; row-gap: 16px; }
   .hero-stats li { flex: 1 1 40%; max-width: none; border-left: none !important; }
   .hero-stats strong { font-size: 1.15rem; }
+  /* 2단 히어로 → 모바일에서는 세로 스택, 이미지는 상단 */
+  .hero-grid {
+    grid-template-columns: 1fr; gap: 26px; text-align: center;
+    max-width: 600px; margin: 0 auto;
+  }
+  .hero-grid .hero-actions, .hero-grid .hero-stats { justify-content: center; }
+  .hero-grid .hero-stats li:first-child { padding-left: 14px; }
+  .hero-media { order: -1; }
+  .page-hero { padding: 38px 20px 34px; }
+  .page-hero h1 { font-size: 1.6rem; }
+  .page-hero .breadcrumb { display: none; }
 
   .site-main { padding: 36px 0 70px; }
   .call-fab { right: 16px; bottom: 16px; width: 56px; height: 56px; }

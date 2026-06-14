@@ -148,6 +148,30 @@ def render_toc(items) -> str:
     )
 
 
+def render_page_hero(page: dict) -> str:
+    """메인을 제외한 모든 페이지에 적용되는 슬림 히어로(제목 + 16:9 이미지)."""
+    crumb = render_breadcrumb(page.get("breadcrumb") or [])
+    img = page.get("hero_image", "/assets/hero.jpg")
+    alt = page.get("hero_alt", page["h1"])
+    return f"""<section class="hero page-hero">
+  <div class="hero-inner hero-grid">
+    <div class="hero-text">
+      {crumb}
+      <h1>{page['h1']}</h1>
+      <p class="hero-lead">{page['desc']}</p>
+      <div class="hero-actions">
+        <a class="hero-btn primary" href="tel:{PHONE}">📞 {PHONE_DISPLAY}</a>
+        <a class="hero-btn" href="/#areas">지역별 안내 보기</a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="{img}" alt="{alt}" width="1280" height="720" loading="eager" decoding="async">
+    </div>
+  </div>
+</section>
+"""
+
+
 def render_page(page: dict) -> str:
     path = page["path"]
     title = page["title"]
@@ -169,8 +193,8 @@ def render_page(page: dict) -> str:
 
     structured = webpage_jsonld(page, canonical) + breadcrumb_jsonld(page, canonical)
 
-    page_head = hero if hero else ""
-    h1_html = "" if hero else f"<h1>{h1}</h1>"
+    # 메인은 전용 히어로, 나머지는 공통 슬림 히어로(제목+이미지)를 사용한다.
+    page_head = hero if hero else render_page_hero(page)
 
     body, toc_items = inject_toc(body)
     toc_html = render_toc(toc_items)
@@ -224,8 +248,6 @@ def render_page(page: dict) -> str:
   <div class="container {layout_cls}">
     {toc_html}
     <article class="page-content">
-      {render_breadcrumb(crumbs)}
-      {h1_html}
       {body}
     </article>
   </div>
