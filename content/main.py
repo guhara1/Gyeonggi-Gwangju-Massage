@@ -1,6 +1,7 @@
 # 메인 페이지 — 허브 역할. 모든 키워드를 밀어 넣지 않고 상세 페이지로 연결한다.
 from .site import (AREAS, BASE_URL, BRAND, PHONE, PHONE_DISPLAY, STATIONS,
                    area_url, station_url)
+from .links import main_longtail
 from .pricing import PRICING
 
 _AREA_CARDS = "".join(
@@ -12,7 +13,7 @@ _STATION_CARDS = "".join(
     for slug, name in STATIONS
 )
 
-_JSONLD = f"""<meta name="naver-site-verification" content="b6d0efd49d748c85bb3482b903c156e278acba81">
+_JSONLD = f"""<meta name="naver-site-verification" content="5ac23a867a067414bbaaf5dea198e3c7aedf3c43">
 <link rel="preload" as="image" href="/assets/hero.webp" type="image/webp" fetchpriority="high">
 <script type="application/ld+json">
 {{
@@ -147,6 +148,7 @@ _BODY = f"""
 <p>메인페이지는 경기 광주시 전체 안내를 담당하고, 읍·면·대표 행정동 페이지는 세부 지역 검색을, 경강선 역세권 페이지는 경기광주역·삼동역·초월역·곤지암역 검색 의도를 담당합니다. 거주 지역이 익숙하면 행정동 페이지를, 역 기준 위치가 익숙하면 역세권 페이지를 보시면 됩니다. 어느 페이지를 보셔도 예약 절차와 비용 기준은 동일하며, 최종 안내는 언제나 정확한 주소를 기준으로 이루어집니다. 과장된 표현이나 허위 후기, 불법·선정적인 안내는 사용하지 않으며, 이용 가능 지역과 예약 절차, 취소 기준, 개인정보 처리 기준을 분명하게 보여드리는 것을 원칙으로 합니다.</p>
 </section>
 
+{main_longtail()}
 <section id="faq">
 <h2>자주 묻는 질문</h2>
 <div class="faq-item">
@@ -184,4 +186,6 @@ PAGE = {
     "extra_head": _JSONLD,
     "breadcrumb": [],
     "hero": _HERO,
+    "review_name": "경기 광주 출장마사지",
+    "review_service": "경기 광주 출장마사지·홈타이",
 }

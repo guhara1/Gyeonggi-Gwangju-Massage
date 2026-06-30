@@ -706,3 +706,91 @@ th { background: var(--panel-2); color: var(--gold-soft); font-family: var(--ser
   .page-content section { padding: 26px 22px 22px; border-radius: 14px; }
   .cta { padding: 36px 20px; }
 }
+
+/* ──────────────────────────────────────────
+   이용 후기 · 평점 (Review / AggregateRating)
+   ────────────────────────────────────────── */
+.reviews .review-summary {
+  display: flex; align-items: center; gap: 22px;
+  margin: 6px 0 22px; padding: 20px 24px;
+  background:
+    radial-gradient(ellipse 70% 120% at 12% 0%, rgba(200, 162, 94, 0.12), transparent 60%),
+    linear-gradient(180deg, #101a30, #0b1322);
+  border: 1px solid var(--line-gold); border-radius: 16px;
+}
+.review-summary-score { text-align: center; line-height: 1.1; }
+.review-score-num {
+  display: block; font-family: var(--serif); font-weight: 900;
+  font-size: 2.7rem; color: var(--gold-soft);
+}
+.review-score-stars { color: var(--gold); letter-spacing: 2px; font-size: 0.95rem; }
+.review-summary-meta { display: flex; flex-direction: column; gap: 2px; }
+.review-summary-meta strong { font-size: 1.05rem; color: var(--text); }
+.review-summary-meta span { color: var(--text-dim); font-size: 0.92rem; }
+
+.review-list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
+}
+.review-card {
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 14px; padding: 18px 20px; transition: 0.18s;
+}
+.review-card:hover { border-color: var(--line-gold); transform: translateY(-2px); }
+.review-card-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-bottom: 8px;
+}
+.review-stars { color: var(--gold); letter-spacing: 1px; font-size: 0.95rem; }
+.review-author { color: var(--text-dim); font-size: 0.88rem; }
+.review-title { font-weight: 700; color: var(--text); margin: 0 0 6px; }
+.review-body { color: var(--text-dim); font-size: 0.94rem; margin: 0; line-height: 1.7; }
+.review-note { color: var(--text-dim); font-size: 0.86rem; margin-top: 16px; }
+
+/* ──────────────────────────────────────────
+   연관 안내 바로가기 (롱테일 내부링크)
+   ────────────────────────────────────────── */
+.related-grid {
+  display: grid; gap: 18px; margin-top: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.related-col-title {
+  font-family: var(--serif); font-weight: 700; color: var(--gold-soft);
+  margin: 0 0 10px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-gold); font-size: 1rem;
+}
+.related-col ul { list-style: none; margin: 0; padding: 0; }
+.related-col li { margin: 0 0 9px; }
+.related-col a {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  color: var(--text); font-size: 0.93rem; line-height: 1.5;
+}
+.related-col a::before { content: "›"; color: var(--gold); font-weight: 700; }
+.related-col a:hover { color: var(--gold-soft); }
+
+/* ──────────────────────────────────────────
+   롱테일 인기 검색 클라우드 (메인)
+   ────────────────────────────────────────── */
+.longtail-cloud {
+  list-style: none; margin: 18px 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.longtail-cloud li { margin: 0; }
+.longtail-cloud a {
+  display: inline-block; padding: 9px 16px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 30px; color: var(--text); font-size: 0.9rem;
+  letter-spacing: 0.01em; transition: 0.16s;
+}
+.longtail-cloud a:hover {
+  border-color: var(--gold); color: var(--gold-soft);
+  background: linear-gradient(180deg, #13203a, var(--panel-2));
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .reviews .review-summary { flex-wrap: wrap; gap: 14px; padding: 18px; }
+  .review-score-num { font-size: 2.3rem; }
+  .longtail-cloud a { font-size: 0.85rem; padding: 8px 13px; }
+}

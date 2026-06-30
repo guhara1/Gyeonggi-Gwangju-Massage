@@ -2,7 +2,7 @@
 from .site import PHONE
 
 PRICING = f"""
-<section class="pricing">
+<section id="pricing" class="pricing">
 <h2>코스별 기본 요금</h2>
 <p class="pricing-lead">60·90·120분 코스별 기본 요금입니다. 숨겨진 추가 비용 없이 투명하게 안내합니다.</p>
 <div class="price-grid">

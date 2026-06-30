@@ -19,6 +19,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from content import PAGES
+from content.links import related_for
+from content.reviews import render_reviews
 from content.site import (BASE_URL, BRAND, BRAND_MARK, INDEXNOW_KEY, NAV,
                           PHONE, PHONE_DISPLAY)
 
@@ -29,7 +31,8 @@ MIN_INDEX_CHARS = 2000
 def text_length(body_html: str) -> int:
     """태그를 제거한 본문 글자수(공백 포함, 연속 공백은 1자).
     공통 요금 블록은 페이지 고유 본문이 아니므로 측정에서 제외한다."""
-    text = re.sub(r'<section class="pricing">.*?</section>', " ", body_html, flags=re.S)
+    text = re.sub(r'<section[^>]*class="[^"]*pricing[^"]*"[^>]*>.*?</section>',
+                  " ", body_html, flags=re.S)
     text = re.sub(r"<[^>]+>", " ", text)
     text = html.unescape(text)
     text = re.sub(r"\s+", " ", text).strip()
@@ -177,6 +180,34 @@ def render_page_hero(page: dict) -> str:
 """
 
 
+def review_names(page: dict):
+    """(display_name, service_name) 또는 (None, None) 반환.
+
+    노출 후기·평점을 붙일 페이지의 이름을 결정한다."""
+    if page.get("no_reviews"):
+        return None, None
+    rn = page.get("review_name")
+    if rn:
+        return rn, page.get("review_service") or f"{rn} 출장마사지·홈타이"
+    path = page.get("path", "")
+    if path.startswith("gwangju-gyeonggi/"):
+        # h1 형식: "<지역명> 출장마사지·홈타이 안내"
+        name = page["h1"].split(" 출장마사지")[0].strip()
+        return name, f"{name} 출장마사지·홈타이"
+    return None, None
+
+
+def _insert_before(body: str, pattern: str, snippet: str) -> str:
+    """본문에서 pattern(정규식) 첫 등장 직전에 snippet 을 삽입한다.
+    찾지 못하면 맨 끝에 덧붙인다."""
+    if not snippet:
+        return body
+    m = re.search(pattern, body)
+    if m:
+        return body[: m.start()] + snippet + body[m.start():]
+    return body + snippet
+
+
 def render_page(page: dict) -> str:
     path = page["path"]
     title = page["title"]
@@ -197,6 +228,28 @@ def render_page(page: dict) -> str:
     canonical = BASE_URL.rstrip("/") + "/" + path
 
     structured = webpage_jsonld(page, canonical) + breadcrumb_jsonld(page, canonical)
+
+    # 후기·평점(Service·AggregateRating·Review) — index 페이지에만 부착한다.
+    display_name, service_name = review_names(page)
+    if service_name and not noindex:
+        rv_html, rv_ld = render_reviews(
+            service_name, display_name, canonical,
+            datetime.date.today(), seed_key=canonical,
+        )
+        structured += rv_ld
+        # 본문 콘텐츠 뒤·요금/CTA 앞에 후기 섹션을 끼워 넣는다.
+        body = _insert_before(
+            body,
+            r'<section[^>]*class="[^"]*pricing[^"]*"|<section[^>]*class="[^"]*cta[^"]*"',
+            rv_html,
+        )
+
+    # 롱테일 연관 내부링크 블록(지역·역 페이지) — 마지막 CTA 직전에 배치.
+    related_html = related_for(path)
+    if related_html:
+        body = _insert_before(
+            body, r'<section[^>]*class="[^"]*cta[^"]*"', related_html
+        )
 
     # 메인은 전용 히어로, 나머지는 공통 슬림 히어로(제목+이미지)를 사용한다.
     page_head = hero if hero else render_page_hero(page)

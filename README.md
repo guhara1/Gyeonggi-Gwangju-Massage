@@ -43,8 +43,15 @@ python3 build.py
 `sitemap.xml`, `robots.txt`, `.nojekyll`을 갱신합니다.
 
 - 본문 텍스트 2,000자 미만 페이지는 자동으로 `noindex` 처리됩니다.
-- 모든 페이지에 `WebPage`·`BreadcrumbList` 구조화 데이터가 자동 삽입되고,
+- 모든 index 페이지에 `WebPage`·`BreadcrumbList`와 함께
+  `Service`·`AggregateRating`·`Review`(후기·평점·점수) 구조화 데이터가 자동 삽입되고,
   메인에는 `Organization`·`FAQPage`가 추가됩니다.
+- 후기·평점은 화면 노출 후기 섹션과 스키마가 함께 생성되며(`content/reviews.py`),
+  기본값은 톤을 잡아 둔 예시 문구입니다. **운영 시 실제 고객 후기로 교체**하면
+  구글·네이버의 별점 리치 결과 정책에도 부합합니다.
+- 지역·역 페이지 하단에는 롱테일 주제 기반 "연관 안내 바로가기" 내부링크 블록이,
+  메인에는 "이런 검색으로 많이 찾으세요" 롱테일 링크 클라우드가 자동 삽입됩니다
+  (`content/links.py`).
 - 오프라인 매장 주소가 없으므로 `LocalBusiness` 스키마는 사용하지 않습니다.
 
 ## 배포 전 설정
@@ -86,7 +93,7 @@ python3 scripts/google_indexing.py
 `.github/workflows/indexnow.yml`:
 - `content/**` 또는 `build.py` 를 **main 에 push** 하면 → 빌드 후 **IndexNow 자동 제출**(글 올릴 때마다 빙·네이버 즉시 통보)
 - 구글 Indexing API 는 수동 실행(workflow_dispatch) 시에만 동작하며, 레포 시크릿 `GCP_SA_KEY`(서비스 계정 JSON) 설정 필요
-> Cloudflare Pages 가 main 외 브랜치에서 배포 중이면 워크플로의 `branches` 를 실제 배포 브랜치로 맞추세요.
+> 현재 배포는 Netlify(`https://gyeonggi-gwangju-massage.netlify.app`)이며, main 외 브랜치에서 배포 중이면 워크플로의 `branches` 를 실제 배포 브랜치로 맞추세요.
 
 > 참고: 구글·빙의 구식 `sitemap ping` 엔드포인트는 2023년 종료되었습니다.
 > 따라서 빙·네이버는 IndexNow, 구글은 Indexing API/서치콘솔로 대체합니다.
