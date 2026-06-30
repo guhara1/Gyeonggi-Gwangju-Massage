@@ -13,4 +13,4 @@ Allow: /
 User-agent: bingbot
 Allow: /
 
-Sitemap: https://gyeonggi-gwangju-massage.pages.dev/sitemap.xml
+Sitemap: https://gyeonggi-gwangju-massage.netlify.app/sitemap.xml
